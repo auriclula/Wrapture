@@ -1,0 +1,16 @@
+{
+  "info": {
+    "version": 1,
+    "author": "photoshop lsr plugin(macOS) v2.0.9"
+  },
+  "properties": {
+    "frame-size": {
+      "width": 800,
+      "height": 480
+    },
+    "frame-center": {
+      "x": 400,
+      "y": 240
+    }
+  }
+}

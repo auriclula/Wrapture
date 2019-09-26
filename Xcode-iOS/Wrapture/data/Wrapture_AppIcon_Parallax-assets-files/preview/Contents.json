@@ -1,0 +1,55 @@
+{
+  "document": {
+    "dimensions": {
+      "width": 800,
+      "height": 480
+    }
+  },
+  "layers": [
+    {
+      "dimensions": {
+        "frame-size": {
+          "width": 800,
+          "height": 480
+        },
+        "frame-center": {
+          "x": 400,
+          "y": 240
+        },
+        "scale": "1x"
+      },
+      "path": "front.imagestacklayer/Content.imageset/front.png",
+      "name": "front"
+    },
+    {
+      "dimensions": {
+        "frame-size": {
+          "width": 800,
+          "height": 480
+        },
+        "frame-center": {
+          "x": 400,
+          "y": 240
+        },
+        "scale": "1x"
+      },
+      "path": "middle.imagestacklayer/Content.imageset/middle.png",
+      "name": "middle"
+    },
+    {
+      "dimensions": {
+        "frame-size": {
+          "width": 800,
+          "height": 480
+        },
+        "frame-center": {
+          "x": 400,
+          "y": 240
+        },
+        "scale": "1x"
+      },
+      "path": "back.imagestacklayer/Content.imageset/back.png",
+      "name": "back"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "info": {
+    "version": 1,
+    "author": "photoshop lsr plugin(macOS) v2.0.9"
+  },
+  "images": [
+    {
+      "idiom": "universal",
+      "filename": "middle.png",
+      "display-gamut": "sRGB",
+      "scale": "1x"
+    }
+  ]
+}
