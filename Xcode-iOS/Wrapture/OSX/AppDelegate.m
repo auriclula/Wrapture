@@ -100,27 +100,14 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Sanity check - make sure ffplay & ffprobe exist
-    NSBundle * myBundle = [NSBundle mainBundle];
-    pathToFFplay = [myBundle pathForResource:@"ffplay" ofType: @""];
-    pathToFFprobe = [myBundle pathForResource:@"ffprobe" ofType: @""];
-    
-    if ( ! [self checkForFFMPEG] ) {
-        NSAlert * alert = [[NSAlert alloc] init];
-        [alert setMessageText:@"This app appears to be damaged."];
-        [alert setInformativeText:@"Please download the newest version and reinstall."];
-        [alert addButtonWithTitle:@"Ok"];
-        [alert runModal];
-        
-        [[NSApplication sharedApplication] terminate:(self)];
-    }
+    [self checkForFFMPEG];
     
     // Clear the cache in preparation for an HTTPS request
     NSURLSessionConfiguration * configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     configuration.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
     // Create the playlist request
-    NSString * url_playlists = @"https://www.firestationstudios.com/playlists/txst-m3u8-playlists.xml";
+    NSString * url_playlists = @"https://www.auriculaonline.com/wrapture/playlists/playlists.xml";
     NSURLSession * session_playslists = [NSURLSession sessionWithConfiguration:configuration];
     NSURLSessionDataTask * dataTask_playlist = [session_playslists dataTaskWithURL:[NSURL URLWithString:url_playlists] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
@@ -402,10 +389,18 @@
 
 - (void)application:(NSApplication *)application openURLs:(NSArray<NSURL *> *)urls
 {
+    [self checkForFFMPEG];
+    
     NSURL * url1 = urls[0];
     NSString * string = url1.absoluteString;
     NSRange loc = NSMakeRange (9, string.length-9);//remove 'm3u8_wrap' and replace with 'https'
     NSString * hack1 = [NSString stringWithFormat:@"%@%@", @"https", [string substringWithRange:loc]];
+
+    // test for file hosted at auriculaonline.com
+    NSRange ext = [hack1 rangeOfString:@".m3u8"];
+    if(ext.location>0 && ext.length>0) {
+        [self play:hack1 autoexit:YES];
+    }
     
     NSURL * url = [NSURL URLWithString:hack1];
     NSURLRequest * request = [NSURLRequest requestWithURL:url];
@@ -491,15 +486,17 @@
 
 - (void)play:(NSString*)path autoexit:(BOOL)autoexit
 {
-    if ( ! [self probe: path] ) { [[NSApplication sharedApplication] terminate:(self)]; }
+    if ( ! [self probe: path] ) {
+        [[NSApplication sharedApplication] terminate:(self)];
+    }
     
     NSTask * task;
     task = [[NSTask alloc] init];
     [task setLaunchPath: pathToFFplay];
-    
+
     NSArray * arguments;
     if ( ! needsChannelMap )
-        arguments = [NSArray arrayWithObjects: @"-autoexit", @"-hide_banner", @"-loglevel", @"panic", @"-i", path, nil];
+        arguments = [NSArray arrayWithObjects: @"-autoexit", @"-hide_banner", @"-loglevel", @"panic", @"-strict", @"1", @"-i", path, nil];
     else
         arguments = [NSArray arrayWithObjects: @"-autoexit", @"-hide_banner", @"-loglevel", @"panic", @"-af", @"channelmap=0|1|2|3|6|7|4|5:7.1", path, nil];
     [task setArguments: arguments];
@@ -518,7 +515,7 @@
     NSTask * task;
     task = [[NSTask alloc] init];
     [task setLaunchPath: pathToFFprobe];
-
+    
     NSArray * arguments;
     arguments = [NSArray arrayWithObjects: path, nil];
     [task setArguments: arguments];
@@ -560,13 +557,23 @@
     return false;
 }
 
-- (BOOL)checkForFFMPEG
+- (void)checkForFFMPEG
 {
+    // Sanity check - make sure ffplay & ffprobe exist
+    NSBundle * myBundle = [NSBundle mainBundle];
+    pathToFFplay = [myBundle pathForResource:@"ffplay" ofType: @""];
+    pathToFFprobe = [myBundle pathForResource:@"ffprobe" ofType: @""];
+    
     NSFileManager * fileManager = [[NSFileManager alloc] init];
-    if ( ! [fileManager fileExistsAtPath:  pathToFFplay] ) { return false; }
-    if ( ! [fileManager fileExistsAtPath: pathToFFprobe] ) { return false; }
+    if ( [fileManager fileExistsAtPath: pathToFFplay] && [fileManager fileExistsAtPath: pathToFFprobe] ) { return; }
 
-    return true;
+    NSAlert * alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"This app appears to be damaged."];
+    [alert setInformativeText:@"Please download the newest version and reinstall."];
+    [alert addButtonWithTitle:@"Ok"];
+    [alert runModal];
+    
+    [[NSApplication sharedApplication] terminate:(self)];
 }
 
 /*

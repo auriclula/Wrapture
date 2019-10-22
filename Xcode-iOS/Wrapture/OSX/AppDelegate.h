@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "PlaylistParser.h"
+#import "../src/PlaylistParser.h"
 #import "CategoryParser.h"
 #import "VideoParser.h"
 
@@ -31,7 +31,7 @@
 //    VideoParser * videoParser;
 }
 
-- (BOOL)checkForFFMPEG;
+- (void)checkForFFMPEG;
 - (BOOL)probe:(NSString*)path;
 - (void)play:(NSString*)path autoexit:(BOOL)autoexit;
 - (void)parsePlaylist:(NSString*)path menu:(NSMenu *)menu menuitem:(NSMenuItem*)menuitem;
