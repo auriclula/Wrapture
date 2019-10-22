@@ -105,14 +105,17 @@ main(int argc, char *argv[])
     if (pc8!=NULL) is7dot1 = true;
     
     char arg0[] = "ffplay";
-        char arg1[] = "-autoexit";//"-hide_banner";
+    char arg1[] = "-autoexit";//"-hide_banner";
     char arg2[] = "-af";
     char arg3[] =            "channelmap=0|1:stereo         ";
+    char arg4[] = "-framedrop";
+    char arg5[] = "-strict";
+    char arg6[] = "1";
     if(is5dot1) strcpy(arg3, "channelmap=0|1|3|2|4|5:5.1    ");
     if(is7dot1) strcpy(arg3, "channelmap=0|1|3|2|6|7|4|5:7.1");
      //  char arg4[] = "https://mediastream.its.txstate.edu/streaming/_definst_/mp4:TexasStateUniversity/SRS/MarkErickson-me02/TL-_gvpWpGw8k6gjzVyAPtmlQ-TL.mp4/playlist.m3u8";
-    char* myargv[] = { &arg0[0], &arg1[0], &arg2[0], &arg3[0], m3u8_url, NULL };
-    int myargc = 5;
+    char * myargv[] = { &arg0[0], &arg1[0], &arg2[0], &arg3[0], &arg4[0], &arg5[0], &arg6[0], m3u8_url, NULL };
+    int myargc = 6;
     
     index = -1;
     if (done == 2 && m3u8_url != NULL) {
