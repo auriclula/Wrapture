@@ -8,18 +8,21 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "display-gamut" : "display-P3"
+      "filename" : "front-3.png",
+      "display-gamut" : "display-P3",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "display-gamut" : "sRGB"
+      "filename" : "front-2.png",
+      "display-gamut" : "sRGB",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "display-gamut" : "display-P3"
+      "filename" : "front-1.png",
+      "display-gamut" : "display-P3",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
